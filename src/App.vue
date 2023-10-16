@@ -1,27 +1,72 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <main class="columns is gapless is-multiline" :class="{ 'dark-mode' : darkModeActivated }">
+    <div class="column is-one-quarter">
+      <SideBar @onToggleDarkMode="changeTheme" />
+    </div>
+    <div class="column is three-quarter content">
+      <FormTask @onSaveTask="addTask" />
+      <div class="list">
+        <TaskUnit v-for="(task, index) in tasks" :key="index" :task="task" />
+        <DescriptionBox v-if="isTaskListEmpty"> GO GET A TASK! >:D </DescriptionBox>
+      </div>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+
+import SideBar from './components/SideBar.vue';
+import FormTask from './components/FormTask.vue';
+import TaskUnit from './components/TaskUnit.vue';
+import ITaskUnit from './interfaces/ITaskUnit';
+import DescriptionBox from './components/DescriptionBox.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld
-  }
-});
+    SideBar,
+    FormTask,
+    TaskUnit,
+    DescriptionBox,
+  },
+  data () {
+    return {
+      tasks: [] as ITaskUnit[],
+      darkModeActivated: false,
+    }
+  },
+  computed:{
+    isTaskListEmpty(): boolean {
+      return this.tasks.length === 0;
+    }
+  },
+  methods: {
+    addTask (task: ITaskUnit) : void {
+      this.tasks.push(task);
+    },
+    changeTheme(darkModeActivated: boolean) {
+      this.darkModeActivated = darkModeActivated;
+    }
+}});
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.list {
+  padding: 1.25rem;
+}
+main {
+  --primary-bg: #fff;
+  --primary-text: #000;
+
+}
+main.dark-mode {
+  --primary-bg: #2b2d42;
+  --primary-text: #ddd;
+
+}
+.content {
+  background-color: var(--primary-bg);
 }
 </style>
