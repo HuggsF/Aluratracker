@@ -1,6 +1,6 @@
 <template>
-  <main class="columns is gapless is-multiline" :class="{ 'dark-mode' : darkModeActivated }">
-    <div class="column is-one-quarter">
+  <main class="columns is gapless is-multiline sideBarColumn" :class="{ 'dark-mode' : darkModeActivated }">
+    <div class="column is-one-quarter" :class="aaa">
       <SideBar @onToggleDarkMode="changeTheme" />
     </div>
     <div class="column is three-quarter content">
@@ -40,6 +40,9 @@ export default defineComponent({
   computed:{
     isTaskListEmpty(): boolean {
       return this.tasks.length === 0;
+    },
+    aaa(): string{
+      return 'aaa'
     }
   },
   methods: {
@@ -68,5 +71,8 @@ main.dark-mode {
 }
 .content {
   background-color: var(--primary-bg);
+}
+.aaa{
+  padding: 0%;
 }
 </style>
